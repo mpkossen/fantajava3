@@ -5,13 +5,13 @@
 
 package beans.session;
 
-import javax.ejb.Local;
+import javax.ejb.Remote;
 
 /**
  *
  * @author mistermartin75
  */
-@Local
-public interface AccountOfficeLocal {
+@Remote
+public interface AccountOfficeRemote {
     
 }

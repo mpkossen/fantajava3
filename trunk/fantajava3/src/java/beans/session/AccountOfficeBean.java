@@ -12,7 +12,7 @@ import javax.ejb.Stateless;
  * @author mistermartin75
  */
 @Stateless
-public class AccountOfficeBean implements AccountOfficeLocal {
+public class AccountOfficeBean implements AccountOfficeRemote {
     
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method" or "Web Service > Add Operation")
