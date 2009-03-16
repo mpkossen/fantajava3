@@ -13,5 +13,7 @@ import javax.ejb.Remote;
  */
 @Remote
 public interface AccountOfficeRemote {
-    
+
+	public void sayHello();
+
 }

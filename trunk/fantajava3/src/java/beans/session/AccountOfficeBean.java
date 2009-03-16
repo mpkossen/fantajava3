@@ -14,7 +14,12 @@ import javax.ejb.Stateless;
 @Stateless
 public class AccountOfficeBean implements AccountOfficeRemote {
     
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method" or "Web Service > Add Operation")
+    /*
+	 * This is a test method
+	 */
+	public void sayHello()
+	{
+		System.out.println("Hello world!");
+	}
  
 }
