@@ -1,10 +1,14 @@
 package session;
 
+import common.BankException;
+import common.Database;
+import common.MD5;
 import entity.Account;
 import entity.Status;
 import entity.Transaction;
 import javax.ejb.Stateless;
 import java.util.HashSet;
+import javax.ejb.Remote;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceException;
@@ -16,13 +20,17 @@ import remote.AccountOfficeIF;
  * @author mistermartin75
  */
 @Stateless
+@Remote
 public class AccountOffice implements AccountOfficeIF {
 
-	public AccountOffice() {
+	public AccountOffice() 
+	{
+		// TODO: Make up a constuctor
 	}
 
     /*
 	 * This is a test method
+	 * @author mistermartin75
 	 */
 	public void sayHello()
 	{
