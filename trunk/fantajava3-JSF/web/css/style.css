@@ -1,0 +1,58 @@
+body {
+	margin: 0;
+    padding: 0;
+}
+
+#wrapper
+{
+    width: 709px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#head
+{
+	padding: 0;
+    margin: 0;
+    height: 182px;
+    background-image: url("../images/topbanner.png");
+}
+
+#menu
+{
+	width: 100%;
+}
+
+#content
+{
+    margin: 0;
+    padding: 0;
+}
+
+#footer
+{
+    background-image: url("../images/bottombanner.png");
+}
+
+/* Element styles */
+table
+{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    text-align: left;
+    border: 1px solid #CCCCCC;
+}
+
+td
+{
+    padding: 3px 10px 3px 10px  ;
+    width: 50%;
+    border: 1px solid #CCCCCC;
+}
+
+td:first-child
+{
+    text-align: right;
+    background: #EAEAEA;
+}

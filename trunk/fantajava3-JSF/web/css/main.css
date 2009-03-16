@@ -1,0 +1,49 @@
+body {
+	font-size: 12px;
+	margin: 0;
+	font-family: Verdana, sans-serif;
+}
+
+input {
+	background-color: #EEE8AA;
+	color: #808000;
+	font-family: Stencil;
+	border-style: ridge;
+	border-width: 3px;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+#wrapper {
+	width: 800px;
+	margin: 0 auto;
+}
+
+#head {
+	background-image: url('../images/header.jpg');
+	text-align: center;
+	height: 158px;
+}
+
+	#head h1 {
+		color: yellow;
+		font-size: 50px;
+		margin: 0;
+		padding: 50px;
+	}
+
+#menu {
+	float: left;
+	width: 150px;
+}
+
+#content {
+	background-color: #F5F5F5;
+	margin-left: 150px;
+	margin-right: 150px;
+}
+
+#login {
+	float: right;
+	width: 150px;
+}

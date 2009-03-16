@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!-- =========== FULL CONFIGURATION FILE ================================== -->
+
+<faces-config version="1.2"
+    xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd">
+	
+	<managed-bean>
+		<managed-bean-name>AccountManagerBean</managed-bean-name>
+		<managed-bean-class>beans.manager.AccountManagerBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+        
+        <managed-bean>
+		<managed-bean-name>NewAccountBean</managed-bean-name>
+		<managed-bean-class>beans.manager.NewAccountBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+
+	<managed-bean>
+		<managed-bean-name>AccountOfficeBean</managed-bean-name>
+		<managed-bean-class>beans.office.AccountOfficeBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+
+	<managed-bean>
+		<managed-bean-name>CommonBean</managed-bean-name>
+		<managed-bean-class>beans.CommonBean</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+
+	<managed-bean>
+		<managed-bean-name>DepositBean</managed-bean-name>
+		<managed-bean-class>beans.office.DepositBean</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+
+	<managed-bean>
+		<managed-bean-name>WithdrawBean</managed-bean-name>
+		<managed-bean-class>beans.office.WithdrawBean</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+
+	<managed-bean>
+		<managed-bean-name>TransferBean</managed-bean-name>
+		<managed-bean-class>beans.office.TransferBean</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+
+</faces-config>
