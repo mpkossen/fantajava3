@@ -6,6 +6,7 @@ import common.MD5;
 import entity.Account;
 import entity.Status;
 import entity.Transaction;
+import message.TransactionManager;
 import javax.ejb.Stateless;
 import java.util.HashSet;
 import javax.ejb.Remote;
