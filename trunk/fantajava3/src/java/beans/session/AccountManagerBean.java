@@ -14,7 +14,6 @@ import javax.ejb.Stateless;
 @Stateless
 public class AccountManagerBean implements AccountManagerLocal {
     
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method" or "Web Service > Add Operation")
+    //niggers
  
 }
