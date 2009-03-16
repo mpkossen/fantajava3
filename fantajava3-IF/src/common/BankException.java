@@ -1,4 +1,4 @@
-package bank;
+package common;
 
 public class BankException
 extends Exception

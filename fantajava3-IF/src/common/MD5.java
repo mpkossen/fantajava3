@@ -1,4 +1,4 @@
-package bank.util;
+package common;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
