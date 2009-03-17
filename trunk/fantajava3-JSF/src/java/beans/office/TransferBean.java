@@ -1,10 +1,20 @@
+/*
+ *
+ * HAS BEEN MOVED
+ * HAS BEEN MOVED
+ * HAS BEEN MOVED
+ * HAS BEEN MOVED
+ * HAS BEEN MOVED
+ *
+ */
+
 package beans.office;
 
 import efg.jpa.bank.AccountOffice;
 import efg.jpa.bank.BankException;
 
 public class TransferBean extends AccountOfficeBean {
-
+	
 	private String reknrNaar;
 	private String bedrag;
 

@@ -1,12 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+// TODO: AccountOfficeIF, AccountManagerIF en MyPrincipal zorgen nog voor problemen, fixen.
 package jaas;
 
-import efg.jpa.bank.AccountManager;
-import efg.jpa.bank.AccountOffice;
-import efg.jpa.bank.util.MD5;
 import java.security.Principal;
 import java.util.Map;
 import java.util.Set;
@@ -67,10 +61,10 @@ public class ABCBankLoginModule implements LoginModule {
 		System.out.println("password=" + password);
 
 		String salt = System.currentTimeMillis() + "";
-		String pincode = MD5.encode(MD5.hash(password + salt));
+		String pincode = password;
 		roles = new MyGroup("Roles");
 		try {
-			AccountManager am = new AccountManager(username, pincode, salt);
+			AccountManagerIF am = new AccountManagerIF(username, pincode, salt);
 			roles.addMember(new MyPrincipal("beheerders"));
 			callerPrincipal = new MyGroup("CallerPrincipal");
 			callerPrincipal.addMember(new MyPrincipal(username, am, this));
@@ -78,7 +72,7 @@ public class ABCBankLoginModule implements LoginModule {
 		} catch (Exception be) {
 			try {
 				System.out.println("Deze inlogger is geen AccountManager");
-				AccountOffice ao = new AccountOffice(username, pincode, salt);
+				AccountOfficeIF ao = new AccountOfficeIF(username, pincode, salt);
 				roles.addMember(new MyPrincipal("klanten"));
 				callerPrincipal = new MyGroup("CallerPrincipal");
 				callerPrincipal.addMember(new MyPrincipal(username, ao, this));

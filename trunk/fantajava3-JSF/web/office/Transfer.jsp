@@ -26,7 +26,7 @@
 				</h:panelGrid>
 				<h:outputText value= "Naar Rekeningnummer"/>
 				<h:panelGrid columns="2">
-					<h:inputText  value="#{TransferBean.reknrNaar}" required="true" id="reknrNaar"  />
+					<h:inputText  value="#{AccountOfficeIF.reknrNaar}" required="true" id="reknrNaar"  />
 					<h:message for="reknrNaar" showDetail="false" showSummary="true"/>
 				</h:panelGrid>
 
