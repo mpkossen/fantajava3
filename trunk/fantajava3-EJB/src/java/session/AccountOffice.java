@@ -2,7 +2,6 @@ package session;
 
 import common.BankException;
 import common.Database;
-import common.MD5;
 import entity.Account;
 import entity.Status;
 import entity.Transaction;
@@ -72,13 +71,9 @@ public class AccountOffice implements AccountOfficeIF {
                 if (lock != 0) {
                     throw new BankException("Account lock(" + lock + ")");
                 }
-                String salt = account.getSalt();
-                if (newSalt.compareTo(salt) <= 0) {
-                    throw new BankException("Invalid salt");
-                }
-                byte[] dws = MD5.hash(account.getPincode() + newSalt);
+                String dws = account.getPincode();
                 // System.out.println(MD5.encode(dws));
-                if (!newPincode.equals(MD5.encode(dws))) {
+                if (!newPincode.equals(dws)) {
                     throw new BankException("Invalid password: " + account.getName());
                 }
                 account.setSalt(newSalt);
