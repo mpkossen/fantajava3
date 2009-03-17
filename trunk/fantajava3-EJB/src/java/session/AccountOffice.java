@@ -72,7 +72,6 @@ public class AccountOffice implements AccountOfficeIF {
                     throw new BankException("Account lock(" + lock + ")");
                 }
                 String dws = account.getPincode();
-                // System.out.println(MD5.encode(dws));
                 if (!newPincode.equals(dws)) {
                     throw new BankException("Invalid password: " + account.getName());
                 }
