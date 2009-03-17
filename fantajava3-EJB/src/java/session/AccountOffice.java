@@ -1,3 +1,4 @@
+// TODO: Methode setMessage werkt nog niet, dit moet nog gefixt worden.
 package session;
 
 import common.BankException;
@@ -23,236 +24,383 @@ import remote.AccountOfficeIF;
 @Remote
 public class AccountOffice implements AccountOfficeIF {
 
-	public AccountOffice() 
-	{
+	private String reknrNaar;
+	private String bedrag;
+
+	public AccountOffice() {
 		// TODO: Make up a constuctor
 	}
 
-    /*
+	/*
 	 * This is a test method
 	 * @author mistermartin75
 	 */
-	public void sayHello()
-	{
+	public void sayHello() {
 		System.out.println("Hello world!");
+	}
+	/*****************************************************************************
+	 * Attributes
+	 ****************************************************************************/
+	private boolean closed = false;
+	private Account account = null;
+	private HashSet<Transaction> transactions = new HashSet<Transaction>(101);
+	private double actualBalance = 0D;
+	private EntityManager entityManager = Database.getEntityManager("AccountOffice");
+
+	/*****************************************************************************
+	 * Construction
+	 ****************************************************************************/
+	public AccountOffice(String newNumber, String newPincode, String newSalt) throws BankException {
+		//System.out.println("AccountOffice(" + newNumber + "," + newPincode + "," + newSalt + ")");
+		synchronized (entityManager) {
+			EntityTransaction tx = entityManager.getTransaction();
+			try {
+				if (tx.isActive()) {
+					throw new BankException("Transaction is active.");
+				}
+				tx.begin();
+				Status status = entityManager.find(Status.class, "0");
+				int stat = Integer.parseInt(status.getBank());
+				if ((stat & Status.CLOSED) == Status.CLOSED) {
+					throw new BankException("Bank is closed.");
+				}
+				account = entityManager.find(Account.class, newNumber);
+				if (account == null) {
+					throw new BankException("no account");
+				}
+				int lock = account.getLock();
+				if (lock != 0) {
+					throw new BankException("Account lock(" + lock + ")");
+				}
+				String dws = account.getPincode();
+				if (!newPincode.equals(dws)) {
+					throw new BankException("Invalid password: " + account.getName());
+				}
+				account.setSalt(newSalt);
+				actualBalance = account.getBalance();
+			} finally {
+				if (!tx.getRollbackOnly()) {
+					try {
+						tx.commit();
+					} catch (RollbackException re) {
+						try {
+							tx.rollback();
+						} catch (PersistenceException pe) {
+							throw new BankException("commit: " + pe.getMessage());
+						}
+					}
+				} else {
+					try {
+						tx.rollback();
+					} catch (PersistenceException pe) {
+						throw new BankException("rollback: " + pe.getMessage());
+					}
+				}
+			}
+		}
 	}
 
 	/*****************************************************************************
-     * Attributes
-     ****************************************************************************/
-    private boolean closed = false;
-    private Account account = null;
-    private HashSet<Transaction> transactions = new HashSet<Transaction>(101);
-    private double actualBalance = 0D;
-    private EntityManager entityManager = Database.getEntityManager("AccountOffice");
+	 * customer - getDetails()
+	 ****************************************************************************/
+	public String[] getDetails() {
+		//System.out.println("AccountOffice.getDetails()");
+		if (closed) {
+			return null;
+		}
+		return account.details();
+	}
 
-    /*****************************************************************************
-     * Construction
-     ****************************************************************************/
-    public AccountOffice(String newNumber, String newPincode, String newSalt) throws BankException {
-        //System.out.println("AccountOffice(" + newNumber + "," + newPincode + "," + newSalt + ")");
-        synchronized (entityManager) {
-            EntityTransaction tx = entityManager.getTransaction();
-            try {
-                if (tx.isActive()) {
-                    throw new BankException("Transaction is active.");
-                }
-                tx.begin();
-                Status status = entityManager.find(Status.class, "0");
-                int stat = Integer.parseInt(status.getBank());
-                if ((stat & Status.CLOSED) == Status.CLOSED) {
-                    throw new BankException("Bank is closed.");
-                }
-                account = entityManager.find(Account.class, newNumber);
-                if (account == null) {
-                    throw new BankException("no account");
-                }
-                int lock = account.getLock();
-                if (lock != 0) {
-                    throw new BankException("Account lock(" + lock + ")");
-                }
-                String dws = account.getPincode();
-                if (!newPincode.equals(dws)) {
-                    throw new BankException("Invalid password: " + account.getName());
-                }
-                account.setSalt(newSalt);
-                actualBalance = account.getBalance();
-            } finally {
-                if (!tx.getRollbackOnly()) {
-                    try {
-                        tx.commit();
-                    } catch (RollbackException re) {
-                        try {
-                            tx.rollback();
-                        } catch (PersistenceException pe) {
-                            throw new BankException("commit: " + pe.getMessage());
-                        }
-                    }
-                } else {
-                    try {
-                        tx.rollback();
-                    } catch (PersistenceException pe) {
-                        throw new BankException("rollback: " + pe.getMessage());
-                    }
-                }
-            }
-        }
-    }
+	/*****************************************************************************
+	 * customer - getPendingTransactions()
+	 ****************************************************************************/
+	public String[][] getPendingTransacties() {
+		//System.out.println("AccountOffice.getPendingTransacties()");
+		if (closed) {
+			return null;
+		}
+		String[][] ret = new String[transactions.size()][];
+		int i = 0;
+		for (Transaction transaction : transactions) {
+			ret[i++] = new String[]{
+						transaction.getId(), transaction.getFrom(), transaction.getTo(), "" + transaction.getAmount(), transaction.getTransactionTime(), transaction.getTransferTime()
+					};
+		}
+		return ret;
+	}
 
-    /*****************************************************************************
-     * customer - getDetails()
-     ****************************************************************************/
-    public String[] getDetails() {
-        //System.out.println("AccountOffice.getDetails()");
-        if (closed) {
-            return null;
-        }
-        return account.details();
-    }
+	/**
+	 * Myprincipal holds the myAccount and is doing a transfer MyPrincipal is
+	 * creating a Transaction entity
+	 *
+	 * transfer(null, 100.0) - this is a deposit - money comes from 100000 -
+	 * Transaction(100000, myAccount, 100.0)
+	 *
+	 * transfer(null, -100.0) - this is a withdrawal - money goes to 100000 -
+	 * Transaction(myAccount, 100000, 100.0)
+	 *
+	 * transfer(toAccount, 100.0) - this is a transfer to another account - money
+	 * goes from myAccount to 100002 - Transaction(myAccount, toAccount, 100.0)
+	 */
+	/*****************************************************************************
+	 * customer - transfer()
+	 ****************************************************************************/
+	public String transfer(String number, double amount) throws BankException {
+		//System.out.println(account.getNumber() + " AccountOffice.transfer(" + number + ", " + amount + ")");
+		boolean ret = false;
+		if (closed) {
+			return "";
+		}
+		String t0 = "" + System.currentTimeMillis();
+		if (number == null) {
+			if (amount > 0D) {
+				// System.out.println("storting: "+amount);
+				ret = transactions.add(new Transaction(null, "100000", account.getNumber(), amount, t0, "0"));
+				actualBalance += amount;
+			} else {
+				// System.out.println("opname: "+amount);
+				if ((-amount > actualBalance + account.getLimit())) {
+					throw new BankException("invalid amount");
+				}
+				ret = transactions.add(new Transaction(null, account.getNumber(), "100000", -amount, t0, "0"));
+				actualBalance += amount;
+			}
+		} else {
+			// System.out.println("overboeking: "+number+", "+amount);
+			if (account.getNumber().equals(number)) {
+				throw new BankException("to account = from account");
+			}
+			if (amount <= 0D) {
+				throw new BankException("invalid amount: " + amount);
+			}
+			if (amount > actualBalance + account.getLimit()) {
+				throw new BankException("balance + limit < amount: " + amount);
+			}
+			ret = transactions.add(new Transaction(null, account.getNumber(), number, amount, t0, "0"));
+			actualBalance -= amount;
+		}
+		return ret ? "oke" : "not oke";
+	}
 
-    /*****************************************************************************
-     * customer - getPendingTransactions()
-     ****************************************************************************/
-    public String[][] getPendingTransacties() {
-        //System.out.println("AccountOffice.getPendingTransacties()");
-        if (closed) {
-            return null;
-        }
-        String[][] ret = new String[transactions.size()][];
-        int i = 0;
-        for (Transaction transaction : transactions) {
-            ret[i++] = new String[]{
-                        transaction.getId(), transaction.getFrom(), transaction.getTo(), "" + transaction.getAmount(), transaction.getTransactionTime(), transaction.getTransferTime()
-                    };
-        }
-        return ret;
-    }
+	/**
+	 * Synchroniseer de rekening met de database. Alle pending transactions van
+	 * dit moment worden gestuurd naar de TransactionManager. De
+	 * TransactionManager voltooid de overboekingen en update de rekeningen in de
+	 * database. Deze bankactie wordt in de achtergrond uitgevooerd en kan enige
+	 * tijd duren. sync() zal daarop niet wachten.
+	 */
+	/*****************************************************************************
+	 * sync()
+	 ****************************************************************************/
+	public void sync() {
+		//System.out.println("AccountOffice.sync()");
+		if (closed) {
+			return;
+		}
+		if (transactions.size() > 0) {
+			synchronized (entityManager) {
+				EntityTransaction tx = entityManager.getTransaction();
+				try {
+					if (tx.isActive()) {
+						System.err.println("Transaction is active.");
+					}
+					tx.begin();
+					Account a = entityManager.find(Account.class, account.getNumber());
+					a.setLock(a.getLock() + 1);
+				} finally {
+					if (!tx.getRollbackOnly()) {
+						try {
+							tx.commit();
+							TransactionManager tm = TransactionManager.getTransactionManager();
+							tm.add(transactions);
+							transactions = new HashSet<Transaction>();
 
-    /**
-     * Myprincipal holds the myAccount and is doing a transfer MyPrincipal is
-     * creating a Transaction entity
-     *
-     * transfer(null, 100.0) - this is a deposit - money comes from 100000 -
-     * Transaction(100000, myAccount, 100.0)
-     *
-     * transfer(null, -100.0) - this is a withdrawal - money goes to 100000 -
-     * Transaction(myAccount, 100000, 100.0)
-     *
-     * transfer(toAccount, 100.0) - this is a transfer to another account - money
-     * goes from myAccount to 100002 - Transaction(myAccount, toAccount, 100.0)
-     */
-    /*****************************************************************************
-     * customer - transfer()
-     ****************************************************************************/
-    public String transfer(String number, double amount) throws BankException {
-        //System.out.println(account.getNumber() + " AccountOffice.transfer(" + number + ", " + amount + ")");
-        boolean ret = false;
-        if (closed) {
-            return "";
-        }
-        String t0 = "" + System.currentTimeMillis();
-        if (number == null) {
-            if (amount > 0D) {
-                // System.out.println("storting: "+amount);
-                ret = transactions.add(new Transaction(null, "100000", account.getNumber(), amount, t0, "0"));
-                actualBalance += amount;
-            } else {
-                // System.out.println("opname: "+amount);
-                if ((-amount > actualBalance + account.getLimit())) {
-                    throw new BankException("invalid amount");
-                }
-                ret = transactions.add(new Transaction(null, account.getNumber(), "100000", -amount, t0, "0"));
-                actualBalance += amount;
-            }
-        } else {
-            // System.out.println("overboeking: "+number+", "+amount);
-            if (account.getNumber().equals(number)) {
-                throw new BankException("to account = from account");
-            }
-            if (amount <= 0D) {
-                throw new BankException("invalid amount: " + amount);
-            }
-            if (amount > actualBalance + account.getLimit()) {
-                throw new BankException("balance + limit < amount: " + amount);
-            }
-            ret = transactions.add(new Transaction(null, account.getNumber(), number, amount, t0, "0"));
-            actualBalance -= amount;
-        }
-        return ret ? "oke" : "not oke";
-    }
+						} catch (RollbackException re) {
+							try {
+								tx.rollback();
+							} catch (PersistenceException pe) {
+								System.err.println("commit: " + pe.getMessage());
+							}
+						}
+					} else {
+						try {
+							tx.rollback();
+						} catch (PersistenceException pe) {
+							System.err.println("rollback: " + pe.getMessage());
+						}
+					}
+				}
+			}
+		}
+	}
 
-    /**
-     * Synchroniseer de rekening met de database. Alle pending transactions van
-     * dit moment worden gestuurd naar de TransactionManager. De
-     * TransactionManager voltooid de overboekingen en update de rekeningen in de
-     * database. Deze bankactie wordt in de achtergrond uitgevooerd en kan enige
-     * tijd duren. sync() zal daarop niet wachten.
-     */
-    /*****************************************************************************
-     * sync()
-     ****************************************************************************/
-    public void sync() {
-        //System.out.println("AccountOffice.sync()");
-        if (closed) {
-            return;
-        }
-        if (transactions.size() > 0) {
-            synchronized (entityManager) {
-                EntityTransaction tx = entityManager.getTransaction();
-                try {
-                    if (tx.isActive()) {
-                        System.err.println("Transaction is active.");
-                    }
-                    tx.begin();
-                    Account a = entityManager.find(Account.class, account.getNumber());
-                    a.setLock(a.getLock() + 1);
-                } finally {
-                    if (!tx.getRollbackOnly()) {
-                        try {
-                            tx.commit();
-                            TransactionManager tm = TransactionManager.getTransactionManager();
-                            tm.add(transactions);
-                            transactions = new HashSet<Transaction>();
+	/*****************************************************************************
+	 * close()
+	 ****************************************************************************/
+	public void close() {
+		//System.out.println("AccountOffice.close()");
+		closed = true;
+	}
 
-                        } catch (RollbackException re) {
-                            try {
-                                tx.rollback();
-                            } catch (PersistenceException pe) {
-                                System.err.println("commit: " + pe.getMessage());
-                            }
-                        }
-                    } else {
-                        try {
-                            tx.rollback();
-                        } catch (PersistenceException pe) {
-                            System.err.println("rollback: " + pe.getMessage());
-                        }
-                    }
-                }
-            }
-        }
-    }
+	/*****************************************************************************
+	 * finalize(), toString()
+	 ****************************************************************************/
+	@Override
+	protected void finalize() throws Throwable {
+		//System.out.println("AccountOffice[" + account.getNumber() + "].finalize()");
+		close();
+	}
 
-    /*****************************************************************************
-     * close()
-     ****************************************************************************/
-    public void close() {
-        //System.out.println("AccountOffice.close()");
-        closed = true;
-    }
+	@Override
+	public String toString() {
+		return account.getName();
+	}
 
-    /*****************************************************************************
-     * finalize(), toString()
-     ****************************************************************************/
-    @Override
-    protected void finalize() throws Throwable {
-        //System.out.println("AccountOffice[" + account.getNumber() + "].finalize()");
-        close();
-    }
+	/*
+	 * From JSF Project
+	 */
+	public String getReknrNaar() {
+		return reknrNaar;
+	}
 
-    @Override
-    public String toString() {
-        return account.getName();
-    }
+	public String getBedrag() {
+		System.out.println("TransferBean.getBedrag()");
+		return bedrag;
+	}
 
+	public void setReknrNaar(String reknr_naar) {
+		this.reknrNaar = reknr_naar;
+	}
+
+	public void setBedrag(String bedrag) {
+		System.out.println("TransferBean.setBedrag(String bedrag)");
+		this.bedrag = bedrag;
+	}
+
+	public void overboeken() {
+		System.out.println("TransferBean.overboeken(" + reknrNaar + ", " + bedrag + ")");
+
+		try {
+			transfer(reknrNaar, Double.parseDouble(bedrag));
+			//setMessage("Transactie is opgeslagen (€" + bedrag + " is overgeboekt naar rekeningnummer " + reknrNaar + ")");
+			setBedrag("");
+			setReknrNaar("");
+		} catch (BankException ex) {
+			//setMessage("Transactie is mislukt");
+		}
+	}
+
+	public void geldOpnemen() {
+		System.out.println("WithdrawBean.geldOpnemen(" + bedrag + ")");
+
+		try {
+			transfer(null, Double.parseDouble(bedrag) * -1);
+			//setMessage("Transactie is opgeslagen (€" + bedrag + " is opgenomen van rekeningnummer " + accountOffice.getDetails()[0] + ")");
+			setBedrag("");
+		} catch (NumberFormatException nfe) {
+			//setMessage("Bedrag moet ingevoerd worden");
+		} catch (BankException ex) {
+			//setMessage("Transactie is mislukt");
+		}
+	}
+
+	public void geldStorten() {
+		System.out.println("DepositBean.geldStorten(" + bedrag + ")");
+
+		try {
+			transfer(null, Double.parseDouble(bedrag));
+			//setMessage("Transactie is opgeslagen. (€" + bedrag + " is gestort op rekeningnummer " + accountOffice.getDetails()[0] + ")");
+			setBedrag("");
+		} catch (BankException ex) {
+			//setMessage("Transactie is mislukt");
+		}
+	}
+
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return getDetails()[0];
+	}
+
+	/**
+	 * @return the rekeningNummer
+	 */
+	public String getRekeningNummer() {
+		return getDetails()[1];
+	}
+
+	/**
+	 * @return the saldo
+	 */
+	public double getSaldo() {
+		return Double.parseDouble(getDetails()[2]);
+	}
+
+	/**
+	 * @return the limiet
+	 */
+	public double getLimiet() {
+		return Double.parseDouble(getDetails()[3]);
+	}
+
+	public void doTransactions() {
+		sync();
+	//setMessage("Transacties zijn voltooid.");
+	}
+
+	/**
+	 *
+	 * @return Transactions
+	 */
+	public String[][] getTransactions() {
+		System.out.println("getTransactions");
+		String[][] tmp = getPendingTransacties();
+		for (String[] a : tmp) {
+			for (String b : a) {
+				System.out.println(b);
+			}
+		}
+		return getPendingTransacties();
+	}
+
+	/*public void bedragInputValidator(FacesContext ctx, UIComponent cmp, Object val) {
+	System.out.println("AccountOfficeBean.bedragInputValidator(" + val + ")");
+	try {
+	if (((String) val).equals("")) {
+	throw new ValidatorException(new FacesMessage("Bedrag moet ingevuld worden"));
+	} else {
+	Double value = Double.parseDouble((String) val);
+	if (value <= 0) {
+	throw new ValidatorException(new FacesMessage("Bedrag moet positief zijn"));
+	}
+	}
+	} catch (NumberFormatException nfe) {
+	throw new ValidatorException(new FacesMessage("Bedrag moet een nummer zijn"));
+	}
+	}*/
+
+	/*public void logout() {
+	System.out.println("loguit");
+	MyPrincipal mp = (MyPrincipal) FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal();
+	mp.logout();
+	HttpSession s = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+	s.invalidate();
+	try {
+	ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+	ec.redirect("../login/Bank.faces");
+	} catch (Exception e) { }
+
+	}*/
+
+	/*public void rekeningInputValidator(FacesContext ctx, UIComponent cmp, Object val) {
+			try {
+				Double value = Double.parseDouble((String) val);
+				if (value <= 0) {
+					throw new ValidatorException(new FacesMessage("Bedrag moet positief zijn"));
+				}
+			} catch (NumberFormatException nfe) {
+				throw new ValidatorException(new FacesMessage("Bedrag moet een nummer zijn"));
+			}
+	}*/
 }
