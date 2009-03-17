@@ -5,6 +5,9 @@
 
 package session;
 
+import common.Database;
+import entity.Account;
+import entity.Status;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -33,7 +36,7 @@ public final class AccountManager
   {
     //System.out.println("AccountManager.getStatus()");
 
- //    Status status = entityManager.find(Status.class, "0");
+     Status status = entityManager.find(Status.class, "0");
       String ret = "";
       switch (Integer.parseInt(status.getBank()))
       {
@@ -65,7 +68,7 @@ public final class AccountManager
         {
     //      throw new BankException("Transaction is active.");
         }
-		  System.out.println("AccountManager voor de grap een soutje");
+		  System.out.println("AccountManager voor de grap een zoutje");
         tx.begin();
 //        Account account = entityManager.find(Account.class, newNumber);
 //        if (account == null) throw new BankException("Wrong account");
@@ -114,12 +117,12 @@ public final class AccountManager
   /*****************************************************************************
    * getAccount
    ****************************************************************************/
- /* public String[] getAccount(String number)
+  public String[] getAccount(String number)
   {
     System.out.println("Accountmanager.getAccount(" + number + ")");
     Account account = entityManager.find(Account.class, number);
     return account.details();
-  }*/
+  }
 
   /*****************************************************************************
    * getTransactions
