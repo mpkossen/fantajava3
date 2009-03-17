@@ -11,35 +11,14 @@ import common.BankException;
  *
  * @author mistermartin75
  */
-public interface AccountOfficeIF {
-
-		/**
-	 * close()
-	 */
+public interface AccountOfficeIF
+{
 	void close();
-
-	/**
-	 * customer - getDetails()
-	 */
 	String[] getDetails();
-
-	/**
-	 * customer - getPendingTransactions()
-	 */
 	String[][] getPendingTransacties();
-
 	void sayHello();
-
-	/**
-	 * sync()
-	 */
 	void sync();
-
 	@Override
 	String toString();
-
-	/**
-	 * customer - transfer()
-	 */
 	String transfer(String number, double amount) throws BankException;
 }
