@@ -15,12 +15,12 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.ejb.*;
 
 @Entity
 @Table(name = "Accounts", schema = "test")
-public class Account implements Serializable
+public class Account implements EntityBean
 {
-  private static final long serialVersionUID = 1L;
   /*****************************************************************************
    * Static
    ****************************************************************************/
