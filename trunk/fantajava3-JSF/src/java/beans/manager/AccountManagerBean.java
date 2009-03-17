@@ -1,17 +1,17 @@
 package beans.manager;
 
 import beans.CommonBean;
-import efg.jpa.bank.AccountManager;
 import jaas.MyPrincipal;
 import java.awt.event.ActionEvent;
 import javax.faces.context.*;
 import javax.servlet.http.HttpSession;
+import remote.AccountManagerIF;
 
 
 public class AccountManagerBean extends CommonBean {
 
 	private static final String STARTFORM = "/manager/subview/selectAccount.jsp";
-	private AccountManager accountManager;
+	private AccountManagerIF accountManager;
 	private String form = STARTFORM;
 	private String accountNumber,  limiet,  naam;
 
@@ -19,7 +19,7 @@ public class AccountManagerBean extends CommonBean {
 		System.out.println("AccountManagerBean()");
 	}
 
-	protected AccountManager getAccountManager() {
+	protected AccountManagerIF getAccountManager() {
 		System.out.println("getAccountManager()");
 		if (accountManager == null) {
 			MyPrincipal mp =
