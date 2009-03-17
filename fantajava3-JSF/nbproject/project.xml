@@ -8,10 +8,6 @@
             <minimum-ant-version>1.6.5</minimum-ant-version>
             <web-module-libraries>
                 <library>
-                    <file>${file.reference.ABC-BANK-JPA.jar}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
-                </library>
-                <library>
                     <file>${reference.fantajava3-IF.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
