@@ -5,10 +5,29 @@
 
 package beans;
 
+import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
+import remote.AccountManagerIF;
+import remote.AccountOfficeIF;
 
 
 public class CommonBean {
+
+	private static final long serialVersionUID = 1L;
+	private String usr = "eric";
+	private String pwd = "";
+	private AccountManagerIF accountmanager = null;
+	private AccountOfficeIF accountOffice = null;
+
+	@EJB(name = "ejb/AccountManagerRef")
+	public void setMyLibraryAdmin(AccountManagerIF newAccountManager) {
+		accountmanager = newAccountManager;
+	}
+
+	@EJB(name = "ejb/AccountOfficeRef")
+	public void setMyLibraryManager(AccountOfficeIF newAccountOffice) {
+		accountOffice = newAccountOffice;
+	}
 
 	private String head = "ABC-Bank";
 	private String message;
