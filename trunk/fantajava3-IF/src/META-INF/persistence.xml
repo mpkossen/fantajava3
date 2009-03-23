@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence   http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+  <persistence-unit name="fantajava3-IF">
+    <jta-data-source>java:/MySqlDS</jta-data-source>
+    <class>entity.Account</class>
+    <class>entity.Transaction</class>
+    <class>entity.Status</class>
+    <properties>
+      <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+    </properties>
+  </persistence-unit>
+</persistence>
+<!--<?xml version="1.0" encoding="UTF-8"?>
 <persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
   <persistence-unit name="fantajava3-IF" transaction-type="RESOURCE_LOCAL">
     <provider>oracle.toplink.essentials.PersistenceProvider</provider>
+	<jta-data-source>java:/MySqlDS</jta-data-source>
     <class>entity.Account</class>
     <class>entity.Status</class>
     <class>entity.Transaction</class>
@@ -13,4 +27,4 @@
       <property name="toplink.ddl-generation" value="drop-and-create-tables"/>
     </properties>
   </persistence-unit>
-</persistence>
+</persistence>-->
