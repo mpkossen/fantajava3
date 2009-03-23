@@ -2,7 +2,6 @@ package beans.manager;
 
 import beans.CommonBean;
 import jaas.MyPrincipal;
-import java.awt.event.ActionEvent;
 import javax.faces.context.*;
 import javax.servlet.http.HttpSession;
 import remote.AccountManagerIF;

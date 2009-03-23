@@ -12,7 +12,7 @@
 package beans.office;
 
 import beans.CommonBean;
-import efg.jpa.bank.AccountOffice;
+import remote.AccountOfficeIF;
 import jaas.MyPrincipal;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -24,13 +24,13 @@ import javax.servlet.http.HttpSession;
 
 public class AccountOfficeBean extends CommonBean {
 
-	private AccountOffice accountOffice;
+	private AccountOfficeIF accountOffice;
 
 	public AccountOfficeBean() {
 		System.out.println("AccountOfficeBean()");
 	}
 
-	protected AccountOffice getAccountOffice() {
+	protected AccountOfficeIF getAccountOffice() {
 		System.out.println("getAccountOffice()");
 		if (accountOffice == null) {
 			MyPrincipal mp =
