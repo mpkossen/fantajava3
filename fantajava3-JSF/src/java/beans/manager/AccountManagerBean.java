@@ -82,8 +82,8 @@ public class AccountManagerBean extends CommonBean {
 	}
 
         public String getStatus() {
-           //return ( "De status van de " + accountManager.getStatus());
-			return "nigger";
+           return ( "De status van de " + accountManager.getStatus());
+			//return "nigger";
         }
 
         public void open() {
