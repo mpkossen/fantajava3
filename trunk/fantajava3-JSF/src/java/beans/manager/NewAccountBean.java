@@ -5,15 +5,15 @@
 package beans.manager;
 
 import beans.CommonBean;
-import efg.jpa.bank.AccountManager;
-import efg.jpa.bank.BankException;
+import common.BankException;
 import jaas.MyPrincipal;
 import javax.faces.context.FacesContext;
+import remote.AccountManagerIF;
 
 
 public class NewAccountBean extends CommonBean {
 
-	private AccountManager accountManager;
+	private AccountManagerIF accountManager;
 	private String naam,  pincode;
 	private Double limiet;
 
@@ -22,7 +22,7 @@ public class NewAccountBean extends CommonBean {
                 limiet = 10000.00;
 	}
 
-	protected AccountManager getAccountManager() {
+	protected AccountManagerIF getAccountManager() {
 		System.out.println("getAccountManager()");
 		if (accountManager == null) {
 			MyPrincipal mp =

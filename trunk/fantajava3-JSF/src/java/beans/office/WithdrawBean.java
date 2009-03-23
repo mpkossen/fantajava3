@@ -10,8 +10,8 @@
 
 package beans.office;
 
-import efg.jpa.bank.AccountOffice;
-import efg.jpa.bank.BankException;
+import common.BankException;
+import remote.AccountOfficeIF;
 
 public class WithdrawBean extends AccountOfficeBean {
 
@@ -34,7 +34,7 @@ public class WithdrawBean extends AccountOfficeBean {
 		System.out.println("WithdrawBean.geldOpnemen(" + bedrag + ")");
 
 		try {
-			AccountOffice accountOffice = getAccountOffice();
+			AccountOfficeIF accountOffice = getAccountOffice();
 			accountOffice.transfer(null, Double.parseDouble(bedrag) * -1);
 			setMessage("Transactie is opgeslagen (€" + bedrag + " is opgenomen van rekeningnummer " + accountOffice.getDetails()[0] + ")");
 			setBedrag("");

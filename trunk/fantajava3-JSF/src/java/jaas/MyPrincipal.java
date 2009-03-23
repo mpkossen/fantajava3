@@ -4,16 +4,16 @@
  */
 package jaas;
 
-import efg.jpa.bank.AccountManager;
-import efg.jpa.bank.AccountOffice;
 import java.io.Serializable;
 import java.security.Principal;
+import remote.AccountOfficeIF;
+import remote.AccountManagerIF;
 
 
 public class MyPrincipal implements Principal, Serializable {
 
-	private AccountManager am;
-	private AccountOffice ao;
+	private AccountManagerIF am;
+	private AccountOfficeIF ao;
 	protected String name;
         private ABCBankLoginModule blm;
 
@@ -22,13 +22,13 @@ public class MyPrincipal implements Principal, Serializable {
 		this.name = name;
 	}
 
-	public MyPrincipal(String name, AccountManager am,  ABCBankLoginModule blm) {
+	public MyPrincipal(String name, AccountManagerIF am,  ABCBankLoginModule blm) {
 		this(name);
 		this.am = am;
                 this.blm = blm;
 	}
 
-	public MyPrincipal(String name, AccountOffice ao,  ABCBankLoginModule blm) {
+	public MyPrincipal(String name, AccountOfficeIF ao,  ABCBankLoginModule blm) {
 		this(name);
 		this.ao = ao;
                 this.blm = blm;
@@ -43,11 +43,11 @@ public class MyPrincipal implements Principal, Serializable {
 		return name;
 	}
 
-	public AccountManager getAccountManager() {
+	public AccountManagerIF getAccountManager() {
 		return am;
 	}
 
-	public AccountOffice getAccountOffice() {
+	public AccountOfficeIF getAccountOffice() {
 		return ao;
 	}
 

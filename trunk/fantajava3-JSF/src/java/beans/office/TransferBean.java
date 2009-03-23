@@ -10,8 +10,8 @@
 
 package beans.office;
 
-import efg.jpa.bank.AccountOffice;
-import efg.jpa.bank.BankException;
+import common.BankException;
+import remote.AccountOfficeIF;
 
 public class TransferBean extends AccountOfficeBean {
 	
@@ -47,7 +47,7 @@ public class TransferBean extends AccountOfficeBean {
 		System.out.println("TransferBean.overboeken(" + reknrNaar + ", " + bedrag + ")");
 
 		try {
-			AccountOffice accountOffice = getAccountOffice();
+			AccountOfficeIF accountOffice = getAccountOffice();
 			accountOffice.transfer(reknrNaar, Double.parseDouble(bedrag));
 			setMessage("Transactie is opgeslagen (€" + bedrag + " is overgeboekt naar rekeningnummer " + reknrNaar + ")");
 			setBedrag("");
