@@ -11,6 +11,8 @@ import javax.security.auth.callback.NameCallback;
 import javax.security.auth.callback.PasswordCallback;
 import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
+import remote.AccountManagerIF;
+import remote.AccountOfficeIF;
 
 
 public class ABCBankLoginModule implements LoginModule {
@@ -64,7 +66,7 @@ public class ABCBankLoginModule implements LoginModule {
 		String pincode = password;
 		roles = new MyGroup("Roles");
 		try {
-			AccountManagerIF am = new AccountManagerIF(username, pincode, salt);
+			AccountManagerIF am = null;
 			roles.addMember(new MyPrincipal("beheerders"));
 			callerPrincipal = new MyGroup("CallerPrincipal");
 			callerPrincipal.addMember(new MyPrincipal(username, am, this));
@@ -72,7 +74,7 @@ public class ABCBankLoginModule implements LoginModule {
 		} catch (Exception be) {
 			try {
 				System.out.println("Deze inlogger is geen AccountManager");
-				AccountOfficeIF ao = new AccountOfficeIF(username, pincode, salt);
+				AccountOfficeIF ao = null;
 				roles.addMember(new MyPrincipal("klanten"));
 				callerPrincipal = new MyGroup("CallerPrincipal");
 				callerPrincipal.addMember(new MyPrincipal(username, ao, this));
