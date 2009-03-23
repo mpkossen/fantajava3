@@ -14,7 +14,6 @@ import remote.AccountManagerIF;
 @Stateless
 @Remote
 public class AccountManager implements AccountManagerIF {
-	//TODO ik heb hier alle klassen uitgesloopt, maar staat in txt bestandje op mn pc
 
 	/*****************************************************************************
 	 * Static - Attributes
@@ -31,6 +30,12 @@ public class AccountManager implements AccountManagerIF {
 		return account.details();
 	}
 
+	/*****************************************************************************
+	 * getStatus
+	 ****************************************************************************/
+	public String getStatus() {
+		return oi;
+	}
 	/*****************************************************************************
 	 * getTransactions
 	 ****************************************************************************/
