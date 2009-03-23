@@ -13,4 +13,5 @@ public interface AccountManagerIF
    String[][] getTransactions(String number);
    String newAccount(double newLimit, String newName, String newPincode) throws BankException;
    String setOpen(boolean b);
+   String getStatus();
 }
