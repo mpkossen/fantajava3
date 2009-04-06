@@ -6,11 +6,11 @@
 
   <ejb-ref>
     <ejb-ref-name>ejb/AccountManagerRef</ejb-ref-name>
-    <jndi-name>jnp://192.168.0.100:1099/AccountManager/remote</jndi-name>
+    <jndi-name>jnp://145.89.124.109:1099/AccountManager/remote</jndi-name>
   </ejb-ref>
   <ejb-ref>
     <ejb-ref-name>ejb/AccountOfficeRef</ejb-ref-name>
-    <jndi-name>jnp://192.168.0.100:1099/AccountOffice/remote</jndi-name>
+    <jndi-name>jnp://145.89.124.109:1099/AccountOffice/remote</jndi-name>
   </ejb-ref>
    
 </jboss-web>
