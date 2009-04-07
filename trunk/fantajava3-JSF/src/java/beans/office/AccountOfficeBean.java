@@ -1,14 +1,3 @@
-/*
- *
- * HAS BEEN MOVED
- * HAS BEEN MOVED
- * HAS BEEN MOVED
- * HAS BEEN MOVED
- * HAS BEEN MOVED
- *
- */
-
-
 package beans.office;
 
 import beans.CommonBean;
