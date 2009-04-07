@@ -11,8 +11,8 @@ import javax.ejb.*;
 import javax.persistence.*;
 import remote.AccountManagerIF;
 
-@Stateless
-@Remote
+@Stateless(mappedName = "AccountManager")
+@Remote(AccountManagerIF.class)
 public class AccountManager implements AccountManagerIF {
 
 	/*****************************************************************************
