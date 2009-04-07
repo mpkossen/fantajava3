@@ -30,6 +30,10 @@ public class AccountManager implements AccountManagerIF {
 		return account.details();
 	}
 
+	public AccountManager() {
+		System.out.println("AccountManager");
+	}
+
 	/*****************************************************************************
 	 * getStatus
 	 ****************************************************************************/
