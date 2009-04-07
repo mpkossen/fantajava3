@@ -12,6 +12,7 @@
 package beans.office;
 
 import beans.CommonBean;
+import beans.Connector;
 import remote.AccountOfficeIF;
 import jaas.MyPrincipal;
 import javax.faces.application.FacesMessage;
@@ -31,14 +32,7 @@ public class AccountOfficeBean extends CommonBean {
 	}
 
 	protected AccountOfficeIF getAccountOffice() {
-		System.out.println("getAccountOffice()");
-		if (accountOffice == null) {
-			MyPrincipal mp =
-					(MyPrincipal) FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal();
-			return accountOffice = mp.getAccountOffice();
-		} else {
-			return accountOffice;
-		}
+		return Connector.getAccountOffice();
 	}
 
 	/**
