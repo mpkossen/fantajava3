@@ -5,10 +5,10 @@
 	<context-root>/fantajava3-JSF</context-root>
 	<ejb-ref>
 		<ejb-ref-name>AccountManagerRef</ejb-ref-name>
-		<jndi-name>jnp://145.89.126.29:1099/AccountManager/remote</jndi-name>
+		<jndi-name>jnp://213.93.162.123:1099/AccountManager/remote</jndi-name>
 	</ejb-ref>
 	<ejb-ref>
 		<ejb-ref-name>AccountOfficeRef</ejb-ref-name>
-		<jndi-name>jnp://145.89.126.29:1099/AccountOffice/remote</jndi-name>
+		<jndi-name>jnp://213.93.162.123:1099/AccountOffice/remote</jndi-name>
   </ejb-ref>
 </jboss-web>
