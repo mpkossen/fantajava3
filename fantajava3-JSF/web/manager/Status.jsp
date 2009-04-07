@@ -18,7 +18,7 @@
 			</h:panelGrid>
 
                         <h:panelGrid columns="1" cellspacing="15">
-				<h:outputText value="#{AccountManagerBean.status}" />
+				<h:outputText value="" />
 			</h:panelGrid>
 
 			<h:panelGrid columns="3" cellspacing="15">
