@@ -22,12 +22,26 @@ public class AccountManager implements AccountManagerIF {
 	public static final String cb = "abc-bank is closed and busy";
 	public static final String oi = "abc-bank is open and idle";
 	public static final String ci = "abc-bank is closed and idle";
-	private static final EntityManager entityManager = Database.getEntityManager("AccountManager");
+	private static EntityManager entityManager;
+
+	static {
+		try{
+		entityManager  = Database.getEntityManager("AccountManager");
+		}catch(Throwable t){
+			System.out.println(t);
+		}
+	}
 
 	public String[] getAccount(String number) {
 		System.out.println("Accountmanager.getAccount(" + number + ")");
-		Account account = entityManager.find(Account.class, number);
-		return account.details();
+		try {
+			Account account = entityManager.find(Account.class, number);
+			System.out.println("Account: " + account.details());
+			return account.details();
+		} catch(Throwable T) {
+			System.out.println(T);
+		}
+		return null;
 	}
 
 	public AccountManager() {
