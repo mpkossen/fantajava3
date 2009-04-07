@@ -17,7 +17,7 @@ public class Database
   /*****************************************************************************
    * Static - Attributes
    ****************************************************************************/
-  private static final String         name                 = "ABC-BANK";
+  private static final String         name                 = "fantajava3-IF";
   private static EntityManagerFactory entityManagerFactory = null;
   private static EntityManager        entityManager        = null;
 
