@@ -16,21 +16,29 @@ public class CommonBean {
 	private static final long serialVersionUID = 1L;
 	private String usr = "eric";
 	private String pwd = "";
-	private AccountManagerIF accountmanager = null;
-	private AccountOfficeIF accountOffice = null;
+	private AccountManagerIF accountmanager = Connector.getAccountManager();
+	private AccountOfficeIF accountOffice = Connector.getAccountOffice();
 
-	@EJB(name = "ejb/AccountManagerRef")
-	public void setMyLibraryAdmin(AccountManagerIF newAccountManager) {
+	/*@EJB(name="AccountManagerRef")
+	public void setMyAccountManager(AccountManagerIF newAccountManager) {
+		System.out.println("CommonBean.setMyAccountManager("+ newAccountManager +")");
 		accountmanager = newAccountManager;
 	}
 
-	@EJB(name = "ejb/AccountOfficeRef")
-	public void setMyLibraryManager(AccountOfficeIF newAccountOffice) {
+	@EJB(name="AccountOfficeRef")
+	public void setMyAccountOffice(AccountOfficeIF newAccountOffice) {
+		System.out.println("CommonBean.setMyAccountOffice("+ newAccountOffice +")");
 		accountOffice = newAccountOffice;
-	}
+	}*/
 
 	private String head = "ABC-Bank";
 	private String message;
+
+	/*@EJB(mappedName="jnp://145.89.124.209:1099/AccountManager/remote")
+	private AccountManagerIF accountManager = null;
+
+	@EJB(mappedName="jnp://145.89.124.209s:1099/AccountOffice/remote")
+	private AccountOfficeIF accountOffice = null;*/
 
 	public CommonBean() {
 		System.out.println("CommonBean()");
@@ -52,7 +60,7 @@ public class CommonBean {
 		this.message = message;
 	}
 	
-	  public boolean getDisplayManager() {
+	public boolean getDisplayManager() {
 	System.out.println("BankBean.getDisplayManager()");
 	return FacesContext.getCurrentInstance().getExternalContext().isUserInRole("beheerders");
     }
