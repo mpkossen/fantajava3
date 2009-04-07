@@ -2,26 +2,28 @@
 <Scene Scope="Project" version="2">
     <Scope Scope="Faces Configuration Only"/>
     <Scope Scope="Project">
-        <Node id="office/login.jsp" x="1150" y="300" zoom="true"/>
-        <Node id="manager/NewAccount.jsp" x="650" y="600" zoom="true"/>
-        <Node id="subview/AccountList.jsp" x="400" y="450" zoom="true"/>
-        <Node id="office/menu.jsp" x="650" y="300" zoom="true"/>
-        <Node id="welcomeJSF.jsp" x="900" y="150" zoom="true"/>
-        <Node id="manager/login.jsp" x="650" y="150" zoom="true"/>
-        <Node id="office/OfficeManager.jsp" x="150" y="600" zoom="true"/>
-        <Node id="general/BankAccess.jsp" x="150" y="750" zoom="true"/>
-        <Node id="subview/header.jsp" x="150" y="300" zoom="true"/>
-        <Node id="manager/menu.jsp" x="1150" y="150" zoom="true"/>
-        <Node id="manager/AccountManager.jsp" x="400" y="150" zoom="true"/>
-        <Node id="index.html" x="150" y="450" zoom="true"/>
         <Node id="office/Withdraw.jsp" x="400" y="300" zoom="true"/>
-        <Node id="manager/subview/EditAccount.jsp" x="900" y="450" zoom="true"/>
+        <Node id="general/BankAccess.jsp" x="150" y="750" zoom="true"/>
+        <Node id="office/login.jsp" x="1150" y="300" zoom="true"/>
+        <Node id="manager/menu.jsp" x="1150" y="150" zoom="true"/>
+        <Node id="office/menu.jsp" x="650" y="300" zoom="true"/>
+        <Node id="BankLogin.jsp" x="150" y="900" zoom="true"/>
         <Node id="subview/footer.jsp" x="150" y="150" zoom="true"/>
+        <Node id="office/OfficeManager.jsp" x="150" y="600" zoom="true"/>
+        <Node id="error.html" x="1650" y="150" zoom="true"/>
+        <Node id="subview/header.jsp" x="150" y="300" zoom="true"/>
+        <Node id="manager/login.jsp" x="650" y="150" zoom="true"/>
+        <Node id="manager/Status.jsp" x="400" y="750" zoom="true"/>
+        <Node id="index.html" x="150" y="450" zoom="true"/>
+        <Node id="subview/AccountList.jsp" x="400" y="450" zoom="true"/>
+        <Node id="manager/subview/EditAccount.jsp" x="900" y="450" zoom="true"/>
+        <Node id="manager/NewAccount.jsp" x="650" y="600" zoom="true"/>
+        <Node id="office/Deposit.jsp" x="1400" y="150" zoom="true"/>
         <Node id="office/Transfer.jsp" x="400" y="600" zoom="true"/>
         <Node id="manager/subview/selectAccount.jsp" x="650" y="450" zoom="true"/>
-        <Node id="manager/Status.jsp" x="400" y="750" zoom="true"/>
         <Node id="manager/subview/accountFormEdit.jsp" x="900" y="300" zoom="true"/>
-        <Node id="office/Deposit.jsp" x="1400" y="150" zoom="true"/>
+        <Node id="manager/AccountManager.jsp" x="400" y="150" zoom="true"/>
+        <Node id="login/Bank.jsp" x="900" y="150" zoom="true"/>
     </Scope>
     <Scope Scope="All Faces Configurations"/>
 </Scene>

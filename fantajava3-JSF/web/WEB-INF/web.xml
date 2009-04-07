@@ -106,22 +106,17 @@
 		<role-name>klanten</role-name>
 	</security-role>
 
-	<context-param>
-		<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
-		<param-value>client</param-value>
-	</context-param>
-
 	<ejb-ref>
-		<ejb-ref-name>ejb/AccountManagerRef</ejb-ref-name>
+		<ejb-ref-name>AccountManagerRef</ejb-ref-name>
 		<ejb-ref-type>session</ejb-ref-type>
 		<home/>
 		<remote>remote.AccountManagerIF</remote>
 	</ejb-ref>
 
 	<ejb-ref>
-		<ejb-ref-name>ejb/AccountOfficeRef</ejb-ref-name>
+		<ejb-ref-name>AccountOfficeRef</ejb-ref-name>
 		<ejb-ref-type>session</ejb-ref-type>
 		<home/>
 		<remote>remote.AccountOfficeIF</remote>
-  </ejb-ref>
+	</ejb-ref>
 </web-app>
