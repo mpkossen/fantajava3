@@ -1,6 +1,7 @@
 package beans.manager;
 
 import beans.CommonBean;
+import beans.Connector;
 import jaas.MyPrincipal;
 import javax.faces.context.*;
 import javax.servlet.http.HttpSession;
@@ -19,14 +20,7 @@ public class AccountManagerBean extends CommonBean {
 	}
 
 	protected AccountManagerIF getAccountManager() {
-		System.out.println("getAccountManager()");
-		if (accountManager == null) {
-			MyPrincipal mp =
-					(MyPrincipal) FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal();
-			return accountManager = mp.getAccountManager();
-		} else {
-			return accountManager;
-		}
+		return Connector.getAccountManager();
 	}
 
 	public String[] getAccount(String number) {
