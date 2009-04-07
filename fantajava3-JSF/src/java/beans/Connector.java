@@ -44,7 +44,7 @@ public class Connector
 		try {
 			ctx = getInitialContext();
 			if (ctx != null) {
-				Object obj = ctx.lookup("jnp://145.89.207.42:1099/AccountManager/remote");
+				Object obj = ctx.lookup(ACCOUNT_MANAGER);
 
 				Class[] cls = obj.getClass().getInterfaces();
 				for (int i = 0; i < cls.length; i++)
