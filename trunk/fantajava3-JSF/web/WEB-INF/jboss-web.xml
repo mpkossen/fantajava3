@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jboss-web PUBLIC "-//JBoss//DTD Web Application 4.2//EN" "http://www.jboss.org/j2ee/dtd/jboss-web_4_2.dtd">
+<jboss-web>
+	<security-domain>java:/jaas/fantasecuritydomain</security-domain>
+	<context-root>/fantajava3-JSF</context-root>
+	<ejb-ref>
+		<ejb-ref-name>AccountManagerRef</ejb-ref-name>
+		<jndi-name>jnp://145.89.207.42:1099/AccountManager/remote</jndi-name>
+	</ejb-ref>
+	<ejb-ref>
+		<ejb-ref-name>AccountOfficeRef</ejb-ref-name>
+		<jndi-name>jnp://145.89.207.42:1099/AccountOffice/remote</jndi-name>
+  </ejb-ref>
+</jboss-web>
