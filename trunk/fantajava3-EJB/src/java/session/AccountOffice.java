@@ -20,8 +20,8 @@ import remote.AccountOfficeIF;
  *
  * @author mistermartin75
  */
-@Stateless(mappedName = "AccountOffice")
-@Remote(AccountOfficeIF.class)
+@Stateless
+@Remote
 public class AccountOffice implements AccountOfficeIF {
 
 	public AccountOffice() {

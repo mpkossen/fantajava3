@@ -37,7 +37,7 @@ public class Connector
 	}
 
 	public static AccountManagerIF getAccountManager() {
-		System.out.println("Connector.getAccountManager $ "+accountManager);
+		System.out.println("Connector.getAccountManager $");
 		if (accountManager != null) {
 			return accountManager;
 		}
@@ -54,7 +54,6 @@ public class Connector
 
 				System.out.println("[OBJECT] " + obj.getClass().getName());
 				accountManager = (AccountManagerIF) obj;
-				System.out.println("Final object found:"+obj);
 				return accountManager;
 			}
 		} catch (NamingException e) {
@@ -64,24 +63,14 @@ public class Connector
 	}
 
 	public static AccountOfficeIF getAccountOffice() {
-		System.out.println("Connector.getAccountOffice "+accountOffice);
+		System.out.println("Connector.getAccountOffice");
 		if (accountOffice != null) {
 			return accountOffice;
 		}
 		try {
 			ctx = getInitialContext();
 			if (ctx != null) {
-				Object obj = ctx.lookup(ACCOUNT_OFFICE);
-
-				Class[] cls = obj.getClass().getInterfaces();
-				for (int i = 0; i < cls.length; i++)
-				{
-					System.out.println("CLS[" + i + "] " + cls[i].getName());
-				}
-
-				System.out.println("[OBJECT] " + obj.getClass().getName());
-				accountOffice = (AccountOfficeIF) obj;
-				System.out.println("Final object found:"+obj);
+				accountOffice = (AccountOfficeIF) ctx.lookup(ACCOUNT_OFFICE);
 				return accountOffice;
 			}
 		} catch (NamingException e) {
